@@ -2,11 +2,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.sogou</groupId>
-    <artifactId>pay-admin</artifactId>
+    <groupId>com.smzdz</groupId>
+    <artifactId>smzdz</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>payadmin-serivce Maven Webapp</name>
+    <name>smzdz Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <repositories>
