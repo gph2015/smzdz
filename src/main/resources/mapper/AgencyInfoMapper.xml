@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.AgencyInfoDao">
+
+    <resultMap type="com.smzdz.entity.AgencyInfo" id="agencyInfo">
+        <result property="id" column="id"/>
+        <result property="agencyCode" column="agency_code"/>
+        <result property="accessPlatform" column="access_platform"/>
+        <result property="agencyName" column="agency_name"/>
+        <result property="aliasFlag" column="alias_flag"/>
+        <result property="agencyType" column="agency_type"/>
+        <result property="prepayUrl" column="prepay_url"/>
+        <result property="payUrl" column="pay_url"/>
+        <result property="queryUrl" column="query_url"/>
+        <result property="refundUrl" column="refund_url"/>
+        <result property="queryRefundUrl" column="query_refund_url"/>
+        <result property="sendPhoneUrl" column="send_phone_url"/>
+        <result  property="createTime" column="create_time"/>
+        <result  property="modifyTime" column="modify_time"/>
+    </resultMap>
+
+
+    <select id="getAgencyInfoList" resultMap="agencyInfo" parameterType="java.lang.String">
+        SELECT * from t_pay_agency_info where 1=1 
+        <if test ="code != null">
+        	and agency_name like CONCAT('%',#{code},'%')
+        </if>
+    </select>
+
+    <!-- 根据ID获取单条信息-->
+    <select id="getById" resultMap="agencyInfo">
+        SELECT * from t_pay_agency_info where id=#{id}
+    </select>
+    
+    <insert id="insertAgencyInfo" parameterType="AgencyInfo">
+		insert into
+		t_pay_agency_info
+		(
+		id,agency_code,access_platform,agency_name,alias_flag,
+		agency_type,prepay_url,pay_url,query_url,refund_url,query_refund_url,send_phone_url,create_time,
+		modify_time)values(#{id},#{agencyCode},#{accessPlatform},#{agencyName},#{aliasFlag},
+		#{agencyType},#{prepayUrl},#{payUrl},#{queryUrl},#{refundUrl},#{queryRefundUrl},#{sendPhoneUrl},#{createTime},
+		#{modifyTime}
+		)
+	</insert>
+	
+	 <update id="updateAgencyInfo" parameterType="AgencyInfo" >
+	update t_pay_agency_info
+	<set>
+		<if test="agencyCode != null">
+			agency_code=#{agencyCode},
+		</if>
+		<if test="accessPlatform != null">
+			access_platform=#{accessPlatform},
+		</if>
+		<if test="agencyName != null">
+			agency_name=#{agencyName},
+		</if>
+		<if test="aliasFlag != null">
+			alias_flag=#{aliasFlag},
+		</if>
+		<if test="agencyType != null">
+			agency_type=#{agencyType},
+		</if> 
+		<if test="prepayUrl != null">
+			prepay_url=#{prepayUrl},
+		</if>
+		<if test="payUrl != null">
+			pay_url=#{payUrl},
+		</if>
+		<if test="queryUrl != null">
+			query_url=#{queryUrl},
+		</if>
+		<if test="refundUrl != null">
+			refund_url=#{refundUrl},
+		</if>
+        <if test="queryRefundUrl != null">
+            query_refund_url=#{queryRefundUrl},
+        </if>
+		<if test="sendPhoneUrl != null">
+			send_phone_url=#{sendPhoneUrl},
+		</if>
+		<if test="modifyTime != null">
+			modify_time=#{modifyTime}
+		</if>
+	</set>
+	where id = #{id}
+</update>
+
+    <!--根据查询条件获取支付机构基本信息 -->   
+    <select id="getAgencyInfoByConn"  resultType="int">
+
+      SELECT count(*) FROM t_pay_agency_info
+         WHERE agency_code = #{agencyCode} and access_platform = #{accessPlatform}  and agency_type = #{agencyType} 
+    </select>
+
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.AppInfoDao">
+
+    <resultMap id="appMap" type="com.smzdz.entity.AppInfo">
+        <result column="id" property="id"/>
+        <result column="app_name" property="appName"/>
+        <result column="app_id" property="appId"/>
+        <result column="belong_company" property="belongCompany"/>
+        <result column="sign_key" property="signKey"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="wx_service_no" property="wxServiceNo"/>
+    </resultMap>
+		
+		<select id="selectAppInfoList" parameterType="java.util.Map" resultMap="appMap">
+			SELECT * FROM t_app  WHERE 1= 1 
+			<if test="appName != null">
+	            and app_name like CONCAT('%',#{appName},'%') 
+	        </if>
+	        <if test="status != null">
+	            and status = #{status} 
+	        </if>
+	        <if test="belongCompany != null">
+	            and belong_company = #{belongCompany} 
+	        </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+		</select>
+		
+		<insert id="insertAppInfo" parameterType="AppInfo">
+		    insert into t_app(
+		        app_name,
+		        app_id,
+		        belong_company,
+		        sign_key,
+		        status,
+		        wx_service_no,
+		        create_time,
+		        modify_time
+		    )
+		    values
+		    (
+		        #{appName},
+		        #{appId},
+		        #{belongCompany},
+		        #{signKey},
+		        #{status},
+		        #{wxServiceNo},
+		        #{createTime},
+		        #{modifyTime}
+		    )
+		</insert>
+
+	 <update id="updateAppInfo" parameterType="AppInfo">
+		UPDATE t_app
+		<set>
+			<if test="appName != null">
+				app_name = #{appName},
+			</if>
+			<if test="belongCompany != null">
+				belong_company = #{belongCompany},
+			</if>
+			<if test="signKey != null">
+				sign_key = #{signKey},
+			</if>
+			<if test="wxServiceNo != null">
+				wx_service_no = #{wxServiceNo},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime}
+			</if>
+		</set>
+		WHERE app_id = #{appId}
+    </update>
+    
+    <select id="selectAppInfoById" resultMap="appMap">
+    	select * from t_app where id = #{id}
+    </select>
+    
+    <select id="selectAppInfo" resultMap="appMap">
+    	SELECT * FROM t_app
+    	WHERE app_name = #{appName} OR app_id = #{appId}
+    </select>
+</mapper>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="pay-beiming:war">
+    <output-path>D:/GPH_PERSONAL/Code/pay-merchant/pay-beiming2/target</output-path>
+    <root id="archive" name="pay-beiming-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="pay-beiming:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.MenuDao">
+
+    <resultMap id="menuMap" type="com.smzdz.entity.MenuItem">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+        <result column="level" property="level"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="parent" property="parent"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+
+    <sql id="columns">
+        id, name, url, level, type, status, parent, sort
+    </sql>
+
+    <select id="select" resultMap="menuMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_menu WHERE id = #{id}
+    </select>
+
+    <select id="selectByParent" resultMap="menuMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_menu WHERE parent = #{parent}
+    </select>
+
+    <select id="selectList" resultMap="menuMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_menu WHERE id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectAll" resultMap="menuMap">
+        SELECT * FROM m_menu
+    </select>
+    <select id="selectTwoMenu" resultMap="menuMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_menu WHERE level =1 OR level= 2
+    </select>
+
+    <insert id="insert" parameterType="MenuItem">
+        INSERT INTO m_menu(
+        name, url, level, type, status, parent, sort
+        ) VALUES (
+        #{name}, #{url}, #{level}, #{type}, #{status}, #{parent},
+        <if test="sort == null">
+            999
+        </if>
+        <if test="sort != null">
+            #{sort}
+        </if>
+        )
+    </insert>
+    <select id="selectAllMenuId">
+        SELECT id FROM m_menu
+    </select>
+
+    <update id="deleteMenu">
+        DELETE FROM m_menu
+        WHERE id = #{id}
+    </update>
+</mapper>

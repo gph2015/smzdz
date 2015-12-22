@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.ReportDao">
+
+    <resultMap id="resultMap" type="com.smzdz.model.TransReportModel">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="version" property="version"/>
+        <result column="instruct_id" property="instructId"/>
+        <result column="out_order_id" property="outOrderId"/>
+        <result column="biz_code" property="bizCode"/>
+        <result column="out_trans_time" property="outTransTime"/>
+        <result column="biz_amt" property="bizAmt"/>
+        <result column="fee_rate" property="feeRate"/>
+        <result column="commission_fee_amt" property="commissionFeeAmt"/>
+        <result column="status" property="status"/>
+        <result column="access_platform" property="accessPlatform"/>
+        <result column="app_id" property="appId"/>
+        <result column="pay_type" property="payType"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="check_date" property="checkDate"/>
+        <result column="agency_code" property="agencyCode"/>
+        <result column="merchant_no" property="merchantNo"/>
+    </resultMap>
+
+
+
+    <select id="selectPayAmtSum" resultType="BigDecimal">
+        select
+        IFNULL(sum(biz_amt),0) as total_pay_amt
+        from t_pay_check_waiting
+        where biz_code =1
+        <if test="f.agencyCode !=null and f.agencyCode !=''">
+            and agency_code = #{f.agencyCode}
+        </if>
+        <if test="f.startDate != null and f.startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.endDate != null and f.endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.instructId != null and f.instructId !=''">
+            and instruct_id = #{f.instructId}
+        </if>
+
+    </select>
+
+    <select id="selectRefundAmtSum" resultType="BigDecimal">
+        select
+        IFNULL( sum(biz_amt),0) as total_refund_amt
+        from t_pay_check_waiting
+        where biz_code =3
+        <if test="f.agencyCode !=null and f.agencyCode !=''">
+            and agency_code = #{f.agencyCode}
+        </if>
+        <if test="f.startDate != null and f.startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.endDate != null and f.endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.instructId != null and f.instructId !=''">
+            and instruct_id = #{f.instructId}
+        </if>
+    </select>
+
+    <select id="selectPayFeeAmtSum" resultType="BigDecimal">
+        select
+        IFNULL(sum(commission_fee_amt),0) as total_pay_fee
+        from t_pay_check_waiting
+        where biz_code =1
+        <if test="f.agencyCode !=null and f.agencyCode !=''">
+            and agency_code = #{f.agencyCode}
+        </if>
+        <if test="f.startDate != null and f.startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.endDate != null and f.endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.instructId != null and f.instructId !=''">
+            and instruct_id = #{f.instructId}
+        </if>
+    </select>
+
+    <select id="selectRefundFeeAmtSum" resultType="BigDecimal">
+        select
+        IFNULL(sum(commission_fee_amt),0) as total_refund_fee
+        from t_pay_check_waiting
+        where biz_code =3
+        <if test="f.agencyCode !=null and f.agencyCode !=''">
+            and agency_code = #{f.agencyCode}
+        </if>
+        <if test="f.startDate != null and f.startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.endDate != null and f.endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.instructId != null and f.instructId !=''">
+            and instruct_id = #{f.instructId}
+        </if>
+    </select>
+
+
+    <select id="selectCount" resultType="int">
+        select count(1) from t_pay_check_waiting
+        where 1 = 1
+        <if test="f.agencyCode !=null and f.agencyCode !=''">
+            and agency_code = #{f.agencyCode}
+        </if>
+        <if test="f.bizCode != 0">
+            and biz_code = #{f.bizCode}
+        </if>
+        <if test="f.startDate != null and f.startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.endDate != null and f.endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.instructId != null and f.instructId !=''">
+            and instruct_id = #{f.instructId}
+        </if>
+    </select>
+
+
+    <select id="selectTransReportList" resultMap="resultMap">
+        select
+        id,
+        create_time,
+        modify_time,
+        instruct_id,
+        out_order_id,
+        biz_code,
+        out_trans_time,
+        biz_amt,
+        fee_rate,
+        commission_fee_amt,
+        status,
+        access_platform,
+        app_id,
+        pay_type,
+        bank_code,
+        check_date,
+        agency_code,
+        merchant_no
+        from t_pay_check_waiting
+        where 1=1
+
+        <if test="f.agencyCode !=null and f.agencyCode !=''">
+            and agency_code = #{f.agencyCode}
+        </if>
+        <if test="f.startDate != null and f.startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.endDate != null and f.endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.bizCode != 0">
+            and biz_code = #{f.bizCode}
+        </if>
+        <if test="f.instructId != null and f.instructId !=''">
+            and instruct_id = #{f.instructId}
+        </if>
+        ORDER BY out_trans_time DESC
+        <if test="pageFlag != null and pageFlag == 'pageFlag'">
+            LIMIT #{beginCount},#{pageRows}
+        </if>
+    </select>
+
+</mapper>

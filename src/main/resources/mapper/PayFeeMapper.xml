@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.PayFeeDao">
+
+    <resultMap type="com.smzdz.entity.PayFee" id="payFee">
+        <result property="id" column="id"/>
+        <result property="payFeeType" column="pay_fee_type"/>
+        <result property="name" column="name"/>
+        <result property="feeType" column="fee_type"/>
+        <result property="accessPlatform" column="access_platform"/>
+        <result property="fee" column="fee"/>
+        <result property="feeRate" column="fee_rate"/>
+        <result property="lowerLimit" column="lower_limit"/>
+        <result property="upperLimit" column="upp_limit"/>
+        <result column="merchant_no" property="merchantNo"/>
+        <result column="status" property="status"/>
+        <result column="agency_code" property="agencyCode"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        
+    </resultMap>
+
+    <!-- 获得手续费按商户号和付款方式-->
+	   <insert id="insertPayFee" parameterType="PayFee">
+			insert into
+			t_pay_fee
+			(
+				id,pay_fee_type,agency_code,name,fee_type,fee,fee_rate,lower_limit,upp_limit,
+				status,merchant_no,create_time,modify_time,access_platform
+			)
+			values
+			(
+				#{id},#{payFeeType},#{agencyCode},#{name},#{feeType},#{fee},#{feeRate},#{lowerLimit},#{upperLimit},#{status},
+				#{merchantNo},#{createTime},#{modifyTime},#{accessPlatform}
+			)
+	</insert>
+	<update id="updatePayFee" parameterType="PayFee" >
+		update t_pay_fee 
+		<set> 
+		<if test = "payFeeType != null">
+		pay_fee_type=#{payFeeType},
+		</if>
+		<if test = "agencyCode != null">
+		agency_code=#{agencyCode},
+		</if>
+		<if test = "name != null">
+		name=#{name},
+		</if>
+		<if test = "feeType != null">
+		fee_type=#{feeType},
+		</if>
+		<if test = "fee != null">
+		fee=#{fee},
+		</if>
+		<if test = "feeRate != null">
+		fee_rate=#{feeRate},
+		</if>
+		<if test = "lowerLimit != null">
+		lower_limit=#{lowerLimit},
+		</if>
+		<if test = "upperLimit != null">
+		upp_limit=#{upperLimit},
+		</if>
+		<if test = "status != null">
+		status=#{status},
+		</if>
+		<if test = "merchantNo != null">
+		merchant_no=#{merchantNo},
+		</if>
+		<if test = "createTime != null">
+		create_time=#{createTime},
+		</if>
+		<if test = "modifyTime != null">
+		modify_time=#{modifyTime},
+		</if>
+		<if test = "accessPlatform != null">
+		access_platform=#{accessPlatform}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="getById" resultMap="payFee">
+        SELECT * from t_pay_fee where id=#{id}
+    </select>
+	
+    <!--根据条件查询对应手续费-->
+    <select id="selectPayFeeList"  resultMap="payFee">
+        SELECT * FROM t_pay_fee WHERE 1= 1
+        <if test="payFeeType != null">
+            and pay_fee_type  like CONCAT('%',#{payFeeType},'%')
+        </if>
+        <if test="agencyCode != null">
+            and agency_code like CONCAT('%',#{agencyCode},'%')
+        </if>
+    </select>
+
+	<select id="getCount" resultType="int">
+		select count(*) from t_pay_fee 
+		where merchant_no = #{merchantNo} 
+			  and pay_fee_type = #{payFeeType} 
+			  and access_platform = #{accessPlatform}
+	</select>
+
+    <!-- 获得手续费按商户号和付款方式-->
+    <select id="getPayFee" resultMap="payFee">
+        SELECT * from t_pay_fee where merchant_no = #{merchantNo} and (pay_fee_type = #{payFeeType} or pay_fee_type = 5)
+        order by pay_fee_type limit 0,1
+    </select>
+
+</mapper>

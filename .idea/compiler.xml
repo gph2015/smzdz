@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+      <entry name="!?*.aj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="commons" />
+        <module name="notify-server" />
+        <module name="pay-admin" />
+        <module name="pay-beiming" />
+        <module name="pay-service" />
+        <module name="pay-timer" />
+        <module name="pay-web" />
+        <module name="thirdpay-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="commons" target="1.7" />
+      <module name="notify-server" target="1.7" />
+      <module name="pay-admin" target="1.7" />
+      <module name="pay-beiming" target="1.7" />
+      <module name="pay-service" target="1.7" />
+      <module name="pay-timer" target="1.7" />
+      <module name="pay-web" target="1.7" />
+      <module name="sogou-pay" target="1.7" />
+      <module name="thirdpay-service" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

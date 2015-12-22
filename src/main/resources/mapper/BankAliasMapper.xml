@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.BankAliasDao">
+
+    <resultMap id="bankAlias" type="com.smzdz.entity.BankAlias">
+        <result column="alias_id" property="aliasId"/>
+        <result column="agency_code" property="agencyCode"/>
+        <result column="bank_card_type" property="bankCardType"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="alias_name" property="aliasName"/>
+        <result column="reserved" property="reserved"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+    <cache eviction="LRU" type="com.smzdz.util.cache.MybatisRedisCache"/>
+    <select id="queryBankAliasList" resultMap="bankAlias">
+        SELECT alias_id,agency_code,bank_card_type,bank_code,alias_name,reserved,create_time,
+        modify_time from t_pay_bank_alias WHERE 1= 1
+        <if test="f.bankCode != null and f.bankCode != ''">
+            and bank_code like CONCAT('%',#{f.bankCode},'%')
+        </if>
+        <if test="f.agencyCode != null and f.agencyCode != ''">
+            and agency_code like CONCAT('%',#{f.agencyCode},'%')
+        </if>
+        <if test="pageFlag != null and pageFlag == 'pageFlag'">
+            LIMIT #{beginCount},#{pageRows}
+        </if>
+    </select>
+    <select id="selectCount" resultType="int">
+        SELECT count(1) FROM t_pay_bank_alias WHERE 1= 1
+        <if test="f.bankCode != null and f.bankCode != ''">
+            and bank_code like CONCAT('%',#{f.bankCode},'%')
+        </if>
+        <if test="f.agencyCode != null and f.agencyCode != ''">
+            and agency_code like CONCAT('%',#{f.agencyCode},'%')
+        </if>
+    </select>
+    <insert id="insertBankAlias" parameterType="BankAlias">
+        insert into t_pay_bank_alias(
+         agency_code,
+         bank_card_type,
+         bank_code,
+         alias_name,
+         reserved,
+         create_time,
+         modify_time
+        )
+        values
+        (
+         #{agencyCode},
+         #{bankCardType},
+         #{bankCode},
+         #{aliasName},
+         #{reserved},
+         #{createTime},
+         #{modifyTime}
+        )
+    </insert>
+
+    <select id="queryBankAlias" resultMap="bankAlias">
+         SELECT alias_id,agency_code,bank_card_type,bank_code,alias_name,reserved,create_time,
+        modify_time FROM t_pay_bank_alias WHERE agency_code = #{agencyCode} AND bank_code = #{bankCode}
+    </select>
+
+    <select id="queryBankAliasDetail" resultMap="bankAlias">
+         SELECT alias_id,agency_code,bank_card_type,bank_code,alias_name,reserved,create_time,
+        modify_time FROM t_pay_bank_alias WHERE alias_id=#{alias_id}
+    </select>
+
+    <update id="updateBankAlias" parameterType="BankAlias">
+        UPDATE t_pay_bank_alias
+        <set>
+            <if test="agencyCode != null">
+                agency_code = #{agencyCode},
+            </if>
+            <if test="bankCode != null">
+                bank_code = #{bankCode},
+            </if>
+            <if test="bankCardType != 0">
+                bank_card_type = #{bankCardType},
+            </if>
+            <if test="aliasName != null">
+                alias_name = #{aliasName},
+            </if>
+            <if test="reserved != null">
+                reserved = #{reserved},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime}
+            </if>
+            <where>
+                <if test="aliasId != 0">
+                    alias_id = #{aliasId}
+                </if>
+            </where>
+        </set>
+    </update>
+    <update id="deleteBankAlias">
+        DELETE FROM t_pay_bank_alias
+         where alias_id = #{aliasId}
+    </update>
+    <!--根据查询条件获取支付机构基本信息 -->
+    <select id="getBankAliasByConn" resultType="int">
+
+        SELECT count(*) FROM t_pay_bank_alias
+        WHERE agency_code = #{agencyCode} and bank_card_type = #{bankCardType}  and bank_code = #{bankCode}
+    </select>
+</mapper>

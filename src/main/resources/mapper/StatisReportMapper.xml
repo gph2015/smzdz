@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.StatisReportDao">
+
+    <select id="selectPayTypeReport" resultType="map">
+        SELECT
+        pay_type,
+        count(instruct_id) as count,
+        SUM(biz_amt) as biz_amt
+        FROM t_pay_check_waiting
+        WHERE biz_code=1
+        <if test="startDate != null and startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="appId !=0 and appId !=1000 ">
+            AND app_id =#{appId}
+        </if>
+        GROUP BY pay_type
+    </select>
+
+    <select id="selectReportByAgency" resultType="map">
+        SELECT
+        agency_code,
+        count(instruct_id) as count,
+        SUM(biz_amt) as biz_amt
+        FROM t_pay_check_waiting
+        WHERE biz_code=1
+        <if test="startDate != null and startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="appId !=0 and appId !=1000 ">
+            AND app_id =#{appId}
+        </if>
+        GROUP BY agency_code
+    </select>
+
+    <select id="selectSuccessResCount" resultType="int">
+        select count(pay_detail_id) from t_pay_order_res_detail
+        WHERE pay_status=1
+        <if test="startDate != null and startDate !=''">
+            and agency_pay_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and agency_pay_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+
+    </select>
+
+    <select id="selectResCount" resultType="int">
+        select count(pay_detail_id) from t_pay_order_res_detail
+        WHERE 1=1
+        <if test="startDate != null and startDate !=''">
+            and agency_pay_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and agency_pay_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+    </select>
+
+    <select id="selectNotifySuccessCount" resultType="int">
+        select count(pay_id) from t_pay_order_info
+        WHERE notify_status=1 and pay_order_status=3
+        <if test="startDate != null and startDate !=''">
+            and pay_success_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and pay_success_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <!--<if test="appId != 0">-->
+            <!--AND app_id =#{appId}-->
+        <!--</if>-->
+    </select>
+
+    <select id="selectPayOrderSuccessCount" resultType="int">
+        select count(pay_id) from t_pay_order_info
+        WHERE pay_order_status=3
+        <if test="startDate != null and startDate !=''">
+            and pay_success_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and pay_success_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <!--<if test="appId != 0">-->
+            <!--AND app_id =#{appId}-->
+        <!--</if>-->
+    </select>
+
+    <select id="selectPayOrderCount" resultType="int">
+        select count(pay_id) from t_pay_order_info
+        WHERE 1=1
+        <if test="startDate != null and startDate !=''">
+            and pay_success_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and pay_success_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <!--<if test="appId != 0">-->
+        <!--AND app_id =#{appId}-->
+        <!--</if>-->
+    </select>
+
+    <select id="selectPaySuccessCount" resultType="int">
+        select  count(instruct_id)
+        FROM t_pay_check_waiting
+        WHERE biz_code=1
+        <if test="startDate != null and startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="appId !=0 and appId !=1000 ">
+            AND app_id =#{appId}
+        </if>
+    </select>
+
+    <select id="selectPaySuccessAmt" resultType="BigDecimal">
+        select sum(biz_amt)
+        FROM t_pay_check_waiting
+        WHERE biz_code=1
+        <if test="startDate != null and startDate !=''">
+            and out_trans_time  &gt;  DATE_FORMAT(concat(#{startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and out_trans_time   &lt;  DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="appId !=0 and appId !=1000 ">
+            AND app_id =#{appId}
+        </if>
+    </select>
+</mapper>

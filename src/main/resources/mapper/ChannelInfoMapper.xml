@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.ChannelInfoDao">
+
+    <resultMap id="channelInfo" type="com.smzdz.entity.ChannelInfo">
+        <result column="id" property="id"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="channel_nature" property="channelNature"/>
+        <result column="channel_name" property="channelName"/>
+        <result column="logo" property="logo"/>
+        <result column="low_limit" property="lowLimit"/>
+        <result column="high_limit" property="highLimit"/>
+        <result column="limit_info" property="limitInfo"/>
+        <result column="channel_type" property="channelType"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+    <cache eviction="LRU" type="com.smzdz.util.cache.MybatisRedisCache"/>
+    <insert id="insertChannelInfo" parameterType="ChannelInfo">
+        insert into t_pay_channel_info(
+        channel_code,
+        channel_nature,
+        channel_name,
+        logo,
+        low_limit,
+        high_limit,
+        limit_info,
+        channel_type,
+        create_time,
+        modify_time
+        )
+        values
+        (
+        #{channelCode},
+        #{channelNature},
+        #{channelName},
+        #{logo},
+        #{lowLimit},
+        #{highLimit},
+        #{limitInfo},
+        #{channelType},
+        #{createTime},
+        #{modifyTime}
+        )
+    </insert>
+    <select id="selectCount" resultType="int">
+        SELECT count(1) FROM t_pay_channel_info WHERE 1= 1
+        <if test="f.channelName != null and f.channelName != ''">
+            and channel_name like CONCAT('%',#{f.channelName},'%')
+        </if>
+        <if test="f.channelType != 0">
+            and channel_type = #{f.channelType}
+        </if>
+    </select>
+
+    <select id="queryAllChannelInfoList" resultMap="channelInfo">
+        SELECT id,channel_code,channel_nature,channel_name,logo,low_limit,high_limit,limit_info,
+        channel_type,create_time,modify_time from t_pay_channel_info
+    </select>
+
+    <select id="queryChannelInfoList" resultMap="channelInfo">
+        SELECT id,channel_code,channel_nature,channel_name,logo,low_limit,high_limit,limit_info,
+        channel_type,create_time,modify_time from t_pay_channel_info WHERE 1= 1
+        <if test="f.channelName != null and f.channelName != ''">
+            and channel_name like CONCAT('%',#{f.channelName},'%')
+        </if>
+        <if test="f.channelType != 0">
+            and channel_type = #{f.channelType}
+        </if>
+        <if test="pageFlag != null and pageFlag == 'pageFlag'">
+            LIMIT #{beginCount},#{pageRows}
+        </if>
+    </select>
+    <select id="queryChannelInfo" resultMap="channelInfo">
+        SELECT id,channel_code,channel_nature,channel_name,logo,low_limit,high_limit,limit_info,
+        channel_type,create_time,modify_time FROM t_pay_channel_info WHERE channel_name = #{channelName} AND channel_type = #{channelType}
+    </select>
+    <select id="queryChannelInfoDetail" resultMap="channelInfo">
+        SELECT id,channel_code,channel_nature,channel_name,logo,low_limit,high_limit,limit_info,
+        channel_type,create_time,modify_time FROM t_pay_channel_info WHERE id=#{id}
+    </select>
+
+    <update id="updateChannelInfo" parameterType="ChannelInfo">
+        UPDATE t_pay_channel_info
+        <set>
+            <if test="channelCode != null">
+                channel_code = #{channelCode},
+            </if>
+            <if test="channelNature != 0">
+                channel_nature = #{channelNature},
+            </if>
+            <if test="channelName != null">
+                channel_name = #{channelName},
+            </if>
+            <if test="logo != null">
+                logo = #{logo},
+            </if>
+            <if test="lowLimit != null">
+                low_limit = #{lowLimit},
+            </if>
+            <if test="highLimit != null">
+                high_limit = #{highLimit},
+            </if>
+            <if test="limitInfo != null">
+                limit_info = #{limitInfo},
+            </if>
+            <if test="channelType != 0">
+                channel_type = #{channelType},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime}
+            </if>
+            <where>
+                <if test="id != null">
+                    id = #{id}
+                </if>
+            </where>
+        </set>
+    </update>
+    <update id="deleteChannelInfo">
+        DELETE FROM t_pay_channel_info
+         where  id = #{id}
+    </update>
+    <select id="queryChannelByCode" resultType="int">
+        SELECT count(1)  FROM t_pay_channel_info WHERE channel_code = #{channelCode}
+    </select>
+</mapper>

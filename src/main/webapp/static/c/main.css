@@ -1,0 +1,172 @@
+ 
+* @Author: lushijie 
+* @Email lushijie1218@126.com
+* @Date:   2015-03-22 15:20:35
+*/
+
+body{font-size: 12px;height:100%;}
+.clear{clear:both;}
+.btn70_1{display:inline-block; width:70px;text-align: center;line-height: 25px; border: 1px solid #4bc1d2;border-radius: 5px;cursor:pointer;background-color: #4bc1d2;color:#fff;margin-right: 20px;}
+.btn70_2{display:inline-block; width:70px;text-align: center;line-height: 25px; border: 1px solid #4bc1d2;border-radius: 5px;cursor:pointer;color:#4bc1d2;background: #fff;}
+.btn100{display:inline-block; width:100px;text-align: center;line-height: 25px; border: 1px solid #4bc1d2;border-radius: 5px;cursor:pointer;background-color: #4bc1d2;color:#fff;margin-right: 20px;}
+.labelName{text-align: right;display: inline-block; color:#a3a3a3;}
+.labelValue{}
+.require{color:#e44233;}
+.pageUl>li{margin-bottom: 20px;margin-right: 10px;}
+.detail li{width:380px;float:left;}
+.datepicker{width:100px;display:inline-block;margin:0px;border-radius: 2px;border:1px solid #d4d4d4;}
+img.ui-datepicker-trigger{position:relative;left:-20px;top:3px;}
+input{border-radius: 3px;border: 1px solid #d6d6d6;}
+
+/**.tableWrap{position:absolute;}*/
+.transactionListPager{ width:500px; padding-right:150px;}
+.paginator {height:70px;min-width: 440px;}
+.paginator li{list-style: none;float: left;min-width: 20px;height: 20px;line-height: 22px;text-align: center;cursor: pointer;border-radius: 5px;margin-left: 10px;margin-right: 10px;}
+.paginator .current{background-color: #676767;color:#fff;font-weight: 500;}
+.paginator {height:70px;min-width: 440px;position:absolute;right:0px;/* bottom:-85px; */margin-top:20px;}
+
+.tableList th,.tableList td{border-left: 1px solid #cfd0d0;border-right: 1px solid #cfd0d0;padding:0px 10px;text-align: center;}
+.tableList th{background-color: #eefafb;height:50px;line-height: 50px;}
+.tableList td{background-color: #fff;height:38px;line-height: 38px;}
+.tableList tr{border-top: 1px solid #cfd0d0;border-bottom: 1px solid #cfd0d0;height:38px;}
+
+
+#header{height: 36px;line-height: 36px;padding: 0 120px;}
+#header .sysName{float: left;/*font-size: 16px;color:#52c3d3;*/width: 115px;height: 36px;overflow: hidden;background: url(../i/logo.png) no-repeat 0 0;}
+#header .sysUser{float: right;}
+#header .sysUser .userName{margin-right: 25px;}
+
+#footer{font-size: 12px;height: 40px;line-height: 40px;text-align: center;color: #4bc1d2; font-family: Arial;}
+#footer a{color: #4bc1d2;text-decoration: none;margin-left: 15px;}
+
+#nav{padding-left: 120px; height:50px;background-color: #4bc1d2;line-height: 50px;}
+#nav ul li{float:left;height:48px;margin-right: 50px;color:#b0ebf4;cursor: pointer;}
+#nav ul li:hover{border-bottom: 2px solid #178d9e;color:#fff;}
+
+#nav ul li a{
+  color: #b0ebf4;
+}
+#nav ul li a:hover{
+  color: #fff;
+}
+#nav ul li:active{
+  border-bottom: 2px solid #178d9e;
+  color: #fff;
+}
+.op1{
+	margin-left:60px
+}
+.table1{
+	margin-left:60px
+}
+
+#mainContent{position: relative;min-height:800px;}
+#leftBar{margin-left:120px;position:absolute;top:0;bottom: 0; height:100%; width: 190px;background-color: #d7eef1;}
+#rightContent{position:absolute;top:0;right:120px;bottom:0;left:310px; padding-top: 20px;padding-left: 18px; background-color: #eefafb;}
+#rightContent .pageTitle{margin-top:15px;margin-bottom:15px;font-size: 14px;color:#52c3d3;}
+
+#productList{display:none;}
+#productList .productListUl>li{float:left;margin-right: 10px;height:25px;}
+#productList .find{margin-right: 15px;}
+
+#productDetail{display:none;}
+#productDetail .productDetailUl>li{float:left;width:380px;}
+#productDetail .key{outline: none;border:1px solid #d4d4d4;padding:0px 10px;width:180px;}
+
+
+#transactionList{display:none;}
+#transactionList .productListUl>li{float:left;margin-right: 10px;height:25px;}
+#transactionList .labelDatepickerEnd{margin-left: -15px;}
+
+
+#transactionDetail{display:none;}
+#transactionDetail .transactionDetailUl>li{float:left;width:190px;overflow: hidden;}
+#transactionDetail .labelName{text-align: left;}
+
+
+#addNewProduct{display:none;}
+#addNewProduct .addNewProductUl>li{float:left;width:380px;}
+#addNewProduct .addNewProductUl>li .labelName{width:80px;}
+#addNewProduct .op{margin-left: 80px;}
+
+
+#addNewUser{display:none;position:relative;}
+#addNewUser .labelName{width:50px;}
+#addNewUser .op{margin-left: 50px;}
+#addNewUser .grant{position:absolute;left:300px;top:-5px;max-height: 275px;max-width:275px;overflow:auto;}
+
+#userList{display:none;}
+#userList .userListUl>li{float:left;margin-right: 45px;}
+#userList .userListUl>li input{width:110px;}
+#userList .op{position:relative;top:-3px;}
+#userList .grant{margin-right: 15px;}
+
+#addNewAgencyMerchant{display:none;}
+#addNewAgencyMerchant .addNewAgencyMerchantUl>li{float:left;width:380px;}
+#addNewAgencyMerchant .addNewAgencyMerchantUl>li .labelName{width:120px;}
+#addNewAgencyMerchant .op{margin-left: 80px;}
+
+#conManageReset{display:none;}
+#conManageReset .conManageResetUl>li{float:left;margin-right: 45px;}
+#conManageReset input{text-align: center;}
+
+#canalManageReset .canalManageResetUl>li {float: left;width: 310px;}
+#canalManageReset .canalManageResetUl>li .labelName {width: 80px;}
+#canalManageReset .canalManageResetUl>li.last{position: relative;top: -100px;}
+#canalManageReset .canalManageResetUl span.submitTitle{float: left;}
+#canalManageReset .canalManageResetUl textarea.submitCon{width: 210px;height: 110px;overflow-y: auto;resize: none;}
+#canalManageReset .opAlign{padding-left: 250px;}
+#canalManageReset .logo{line-height: 30px;}
+#canalManageReset .logo .logoImg{width: 120px;height: 30px;}
+#canalManageReset .logo span{float: left;}
+#canalManageReset .uploadAgain{float: right;color: #4bc1d2;text-decoration: none;padding-right:50px;}
+
+/*#conRouteList{display:none;}*/
+#conRouteList .conRouteListUl>li{float:left;margin-right: 45px;width:270px;}
+#conRouteList .conRouteListUl>li .labelName {width: 80px;}
+/*#conRouteList .conRouteListUl>li input{width:110px;}*/
+#conRouteList td {text-align: center;vertical-align: middle;}
+#conRouteList .look{ margin-right: 15px;}
+
+.return{font-size: 18px;margin-bottom: 15px;color: green;}
+
+#rightContent,.tableWrap1{min-width: 700px;overflow-x:auto; overflow-y:hidden;}
+/*#conRouteList,#canalManageReset,#conManageReset{width: 300px;overflow-x:auto; }*/
+
+#rightContent .labelName{width:120px;}
+.point{color:#f00;display: none;}
+#rightContent #transactionList .labelName {}
+
+#rightContent{overflow:auto;}
+/**.tableWrap{overflow:auto;}*/
+
+
+.result .result-content{width:300px;margin: 100px auto;}
+.result .result-point{font-size: 20px;color: #000;font-family: "΢���ź�";line-height: 37px;text-align: center;position: relative;}
+.result .result-point .success{position: absolute;top: -30px;left: 0;width: 90px;height: 90px;background: url(../i/img/submit.png) no-repeat 0 0;background-size: 90px 90px;}
+.result .result-point .error{position: absolute;top: -30px;left: 0;width: 90px;height: 90px;background: url(../i/img/error.png) no-repeat 0 0;background-size: 90px 90px;}
+.errorBack {display: block;width: 151px;height: 33px;background: url(../i/img/btn.gif) no-repeat;border: none;cursor: pointer;margin: 50px 0 0 20px;}
+#rightContent .transactionDetailUl>li .labelName {
+    width: 120px;
+    text-align: right;
+}
+#transactionDetail .transactionDetailUl>li {
+    float: left;
+    width: 441px;
+    overflow: hidden;
+}
+#transactionDetail .value{width: auto;/*overflow:hidden;text-overflow:ellipsis;white-space:nowrap; display:inline-block; float: right;*/}
+.errorBox{width: 540px;margin: 200px auto;}
+.errorBox:after,.errorBox:before{  content: "";display: table;}
+.errorBox img{float: left;width: 145px;height: 167px;}
+.errorRelate{float: left;width: 395px;}
+.errorTitle{font-size: 20px;color: #000;font-family: "微软雅黑";line-height: 37px;text-align: center;position: relative;}
+.errorTitle span{width: 37px;height: 37px;background: url(../i/img/LoginError.jpg) no-repeat;position: absolute;top: 0;left: 100px;}
+.errorDetail{font-size: 25px;color: #000;font-family: "微软雅黑";line-height: 80px;}
+.errorBack{display: block;width: 151px;height: 33px;background: url(../i/img/btn.gif) no-repeat;border: none;margin: 15px auto;cursor:pointer;}
+
+#updateChannleInfo{display:none;}
+#updateChannleInfo .updateChannleInfoUl>li{float:left;width:380px;}
+#updateChannleInfo .updateChannleInfoUl>li .labelName{width:120px;height: 22px}
+#updateChannleInfo .updateChannleInfoUl>li .labelNames{width:125px;height: 32px}
+#updateChannleInfo .op{margin-left: 80px;}

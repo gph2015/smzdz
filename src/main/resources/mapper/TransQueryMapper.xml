@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.TransQueryDao">
+
+    <resultMap id="resultMap" type="com.smzdz.model.TransQueryModel">
+        <!-- 支付单信息-->
+        <result column="pay_id" property="payId"/>
+        <result column="order_type" property="orderType"/>
+        <result column="order_id" property="orderId"/>
+        <result column="product_info" property="productInfo"/>
+        <result column="order_money" property="orderMoney"/>
+        <result column="buy_home_account" property="buyHomeAccount"/>
+        <result column="buy_home_ip" property="buyHomeIp"/>
+        <result column="sell_home_account" property="sellHomeAccount"/>
+        <result column="access_platform" property="accessPlatForm"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="pay_order_status" property="payOrderStatus"/>
+        <result column="refund_money" property="refundMoney"/>
+        <result column="refund_flag" property="refundFlag"/>
+        <result column="order_create_time" property="orderCreateTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="pay_success_time" property="paySuccessTime"/>
+        <result column="app_id" property="appId"/>
+        <result column="notify_status" property="notifyStatus"/>
+        <result column="app_page_url" property="appPageUrl"/>
+        <result column="app_bg_url" property="appBgUrl"/>
+        <!-- 支付回调信息-->
+        <result column="pay_detail_id" property="payDetailId"/>
+        <!--<result column="access_platform" property="accessPlatform"/>-->
+        <result column="pay_fee_type" property="payFeeType"/>
+        <result column="balance" property="balance"/>
+        <!--<result column="true_money" property="trueMoney"/>-->
+        <result column="agency_code" property="agencyCode"/>
+        <result column="agency_order_id" property="agencyOrderId"/>
+        <result column="bank_card_type" property="bankCardType"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="bank_order_id" property="bankOrderId"/>
+        <!--<result column="agency_pay_time" property="agencyPayTime"/>-->
+        <!--<result column="refund_code" property="refundCode"/>-->
+        <!--<result column="pay_status" property="payStatus"/>-->
+        <result column="merchant_no" property="merchantNo"/>
+        <!--<result column="create_time" property="createTime"/>-->
+        <result column="pay_fee" property="payFee"/>
+        <result column="fee_rate" property="feeRate"/>
+    </resultMap>
+
+    <resultMap id="statisResult" type="com.smzdz.model.TransStatisModel">
+        <result column="app_id" property="appId"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="pay_order_status" property="payOrderStatus"/>
+        <result column="trans_count" property="transCount"/>
+        <result column="money_amount" property="moneyAmount"/>
+    </resultMap>
+
+    <select id="selectCount" resultMap="statisResult">
+        SELECT app_id, channel_code, pay_order_status, count(1) as trans_count, sum(order_money) as money_amount FROM t_pay_order_info WHERE 1= 1
+        <if test="f.appId !=0 and f.appId !=1000 ">
+            and app_id = #{f.appId}
+        </if>
+        <if test="f.status != 0">
+            and pay_order_status = #{f.status}
+        </if>
+        <if test="f.accessPlatform != 0">
+            and access_platform = #{f.accessPlatform}
+        </if>
+        <if test="f.payId != null and f.payId != ''">
+            and pay_id = #{f.payId}
+        </if>
+        <if test="f.buyHomeAccount != null and f.buyHomeAccount != ''">
+            and buy_home_account = #{f.buyHomeAccount}
+        </if>
+        <if test="f.orderId != null and f.orderId != ''">
+            and order_id = #{f.orderId}
+        </if>
+        <if test="f.channelCode != null and f.channelCode != ''">
+            and channel_code = #{f.channelCode}
+        </if>
+        <if test="f.startDate != null and f.startDate != ''">
+             and pay_success_time  &gt;  DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.endDate != null and f.endDate != ''">
+             and pay_success_time   &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="f.statis == 'true'">
+            GROUP BY app_id, channel_code, pay_order_status
+        </if>
+    </select>
+
+    <select id="selectByPaging" resultMap="resultMap">
+        SELECT
+        pay_id,
+        order_type,
+        order_id,
+        product_info,
+        order_money,
+        buy_home_account,
+        buy_home_ip,
+        sell_home_account,
+        channel_code,
+        access_platform,
+        pay_order_status,
+        refund_money,
+        refund_flag,
+        order_create_time,
+        create_time,
+        pay_success_time,
+        app_id,
+        notify_status,
+        app_page_url,
+        app_bg_url
+        FROM t_pay_order_info WHERE 1= 1
+        <if test="f.appId !=0 and f.appId !=1000 ">
+            and app_id = #{f.appId}
+        </if>
+        <if test="f.status != 0">
+            and pay_order_status = #{f.status}
+        </if>
+        <if test="f.accessPlatform != 0">
+            and access_platform = #{f.accessPlatform}
+        </if>
+        <if test="f.payId != null and  f.payId != ''">
+            and pay_id = #{f.payId}
+        </if>
+        <if test="f.buyHomeAccount != null and f.buyHomeAccount != ''">
+            and buy_home_account = #{f.buyHomeAccount}
+        </if>
+        <if test="f.orderId != null and f.orderId != ''">
+            and order_id = #{f.orderId}
+        </if>
+        <if test="f.channelCode != null and f.channelCode != ''">
+            and channel_code = #{f.channelCode}
+        </if>
+        <if test="f.startDate != null and f.startDate != ''">
+            and pay_success_time  &gt;   DATE_FORMAT(concat(#{f.startDate},' 00:00:00') ,'%Y-%m-%d %H:%i:%S')
+        </if><if test="f.endDate != null and f.endDate != ''">
+             and pay_success_time &lt;  DATE_FORMAT(concat(#{f.endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        order by pay_success_time desc
+        <if test="pageFlag != null and pageFlag == 'pageFlag'">
+            LIMIT #{beginCount},#{pageRows}
+        </if>
+    </select>
+
+
+    <select id="selectPayOrderByPayId" resultMap="resultMap">
+        select
+        pay_id,
+        order_type,
+        order_id,
+        product_info,
+        order_money,
+        buy_home_account,
+        buy_home_ip,
+        sell_home_account,
+        access_platform,
+        pay_order_status,
+        refund_money,
+        refund_flag,
+        order_create_time,
+        create_time,
+        pay_success_time,
+        app_id,
+        notify_status,
+        app_page_url,
+        app_bg_url
+        FROM
+       t_pay_order_info
+       WHERE pay_id= #{payId}
+    </select>
+
+    <!--<select id="selectNoSuccessByPayId" resultMap="resultMap">-->
+        <!--select-->
+        <!--t1.pay_id,-->
+        <!--t1.order_type,-->
+        <!--t1.order_id,-->
+        <!--t1.product_info,-->
+        <!--t1.order_money,-->
+        <!--t1.buy_home_account,-->
+        <!--t1.buy_home_ip,-->
+        <!--t1.sell_home_account,-->
+        <!--t1.access_platform,-->
+        <!--t1.pay_order_status,-->
+        <!--t1.refund_money,-->
+        <!--t1.refund_flag,-->
+        <!--t1.order_create_time,-->
+        <!--t1.create_time,-->
+        <!--t1.pay_success_time,-->
+        <!--t1.app_id,-->
+        <!--t1.notify_status,-->
+        <!--t1.app_page_url,-->
+        <!--t1.app_bg_url,-->
+
+        <!--t3.pay_detail_id,-->
+        <!--t3.pay_fee_type,-->
+        <!--t3.balance,-->
+        <!--t3.true_money,-->
+        <!--t3.merchant_no,-->
+        <!--t3.agency_code,-->
+        <!--t3.bank_code,-->
+        <!--t3.bank_card_type-->
+        <!--FROM-->
+        <!--(SELECT * FROM t_pay_order_info  WHERE pay_id= #{payId}) t1-->
+        <!--LEFT JOIN t_pay_order_relation t2 ON  t1.pay_id=t2.pay_id-->
+        <!--LEFT JOIN t_pay_req_detail  t3 ON t2.pay_detail_id=t3.pay_detail_id-->
+        <!--WHERE t2.info_status=1-->
+    <!--</select>-->
+
+    <select id="selectSuccessByPayId" resultMap="resultMap">
+       select
+	    t1.pay_id,
+        t1.order_type,
+        t1.order_id,
+        t1.product_info,
+        t1.order_money,
+        t1.buy_home_account,
+        t1.buy_home_ip,
+        t1.sell_home_account,
+        t1.access_platform,
+        t1.pay_order_status,
+        t1.refund_money,
+        t1.refund_flag,
+        t1.order_create_time,
+        t1.create_time,
+        t1.pay_success_time,
+        t1.app_id,
+        t1.notify_status,
+        t1.app_page_url,
+        t1.app_bg_url,
+
+        t3.pay_detail_id,
+        t3.pay_fee_type,
+        t3.balance,
+        t3.agency_code,
+        t3.agency_order_id,
+        t3.bank_card_type,
+        t3.bank_code,
+        t3.bank_order_id,
+        t3.merchant_no,
+        t3.pay_fee,
+        t3.fee_rate
+	  FROM
+        (SELECT * FROM t_pay_order_info  WHERE pay_id= #{payId}) t1
+        LEFT JOIN t_pay_order_relation t2 ON  t1.pay_id=t2.pay_id
+        LEFT JOIN t_pay_order_res_detail  t3 ON t2.pay_detail_id=t3.pay_detail_id
+        WHERE t2.info_status=1 and t3.pay_status=1
+    </select>
+
+    <select id="selectRefundFee" resultType="BigDecimal">
+      SELECT
+        IFNULL( sum(commission_fee_amt),0) as total_refund_amt
+        FROM t_pay_check_waiting
+        where biz_code =3
+        and instruct_id
+	in
+	( select refund_id from t_refund_info where pay_id=#{payId})
+    </select>
+
+</mapper>

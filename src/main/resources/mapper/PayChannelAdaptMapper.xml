@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.ChannelAdaptDao">
+
+    <resultMap id="resultMap" type="com.smzdz.entity.PayChannelAdapt">
+    	<result column="id" property="id"/>
+        <result column="app_id" property="appId"/>
+		<result column="app_name" property="appName"/>
+		<result column="access_platform" property="accessPlatform"/>
+		<result column="channel_type" property="channelType"/>
+		<result column="bank_card_type" property="bankCardType"/>
+		<result column="channel_code" property="channelCode"/>
+		<result column="channel_name" property="channelName"/>
+		<result column="sort" property="sort"/>
+		<result column="status" property="status"/>
+		<result column="create_time" property="createTime"/>
+    </resultMap>
+    
+	<select id="selectChannelAdaptList" resultMap="resultMap">
+		SELECT t1.id,t1.app_id,app_name,access_platform,t1.channel_type,bank_card_type,t1.channel_code,
+			   t2.channel_name,t1.sort,t1.status,t1.create_time
+		FROM t_pay_channel_adapt t1,t_pay_channel_info t2,t_app t3
+		WHERE t1.channel_code = t2.channel_code AND t1.app_id = t3.app_id
+		<if test="f.appId != null and f.appId !=''">
+			AND t1.app_id = #{f.appId}
+		</if>
+		<if test="f.accessPlatform != null and f.accessPlatform !=''">
+			AND (t1.access_platform = #{f.accessPlatform} OR t1.access_platform = 99)
+		</if>
+		<if test="f.channelName != null and f.channelName != ''">
+			AND t2.channel_name like CONCAT('%',#{f.channelName},'%')
+		</if>
+		<if test="f.channelType != null and f.channelType != ''">
+			AND (t1.channel_type = #{f.channelType} OR t1.channel_type = 99)
+		</if>
+		<if test="f.status != null and f.status != ''">
+			AND t1.status = #{f.status}
+		</if>
+		<if test="f.bankCardType != null and f.bankCardType != ''">
+			AND (t1.bank_card_type = #{f.bankCardType} OR t1.bank_card_type = 3)
+		</if>
+        ORDER BY t1.channel_type DESC,t1.sort
+        LIMIT #{beginCount},#{pageRows}
+	</select>
+	
+	<select id="selectCount" resultType="int">
+		SELECT count(*)  
+		FROM t_pay_channel_adapt t1,t_pay_channel_info t2,t_app t3
+		WHERE t1.channel_code = t2.channel_code AND t1.app_id = t3.app_id
+		<if test="f.appId != null and f.appId !=''">
+			AND t1.app_id = #{f.appId}
+		</if>
+		<if test="f.accessPlatform != null and f.accessPlatform !=''">
+			AND (t1.access_platform = #{f.accessPlatform} OR t1.access_platform = 99)
+		</if>
+		<if test="f.channelName != null and f.channelName != ''">
+			AND t2.channel_name like CONCAT('%',#{f.channelName},'%')
+		</if>
+		<if test="f.channelType != null and f.channelType != ''">
+			AND (t1.channel_type = #{f.channelType} OR t1.channel_type = 99)
+		</if>
+		<if test="f.status != null and f.status != ''">
+			AND t1.status = #{f.status}
+		</if>
+		<if test="f.bankCardType != null and f.bankCardType != ''">
+			AND (t1.bank_card_type = #{f.bankCardType} OR t1.bank_card_type = 3)
+		</if>
+	</select>
+	
+	<select id="selectAdaptListByCon" resultMap="resultMap">
+		SELECT * FROM t_pay_channel_adapt 
+		WHERE 1 = 1 
+		<if test="appId != null">
+			AND app_id = #{appId}
+		</if>
+		<if test="accessPlatform != null">
+			AND (access_platform = #{accessPlatform} OR access_platform = 99)
+		</if>
+		<if test="channelCode != null">
+			AND channel_code = #{channelCode}
+		</if>
+		<if test="channelType != null">
+			AND (channel_type = #{channelType} OR channel_type = 99)
+		</if>
+		<if test="bankCardType != null">
+			AND (bank_card_type = #{bankCardType} OR bank_card_type = 3)
+		</if>
+	</select>
+	<select id="selectChannelAdaptById" parameterType="int" resultMap="resultMap">
+		SELECT t1.id,t1.app_id,app_name,access_platform,t1.channel_type,bank_card_type,t1.channel_code,
+			   t2.channel_name,t1.sort,t1.status,t1.create_time
+		FROM t_pay_channel_adapt t1,t_pay_channel_info t2,t_app t3
+		WHERE t1.id = #{id} AND t1.channel_code = t2.channel_code AND t1.app_id = t3.app_id
+	</select>
+	
+    <insert id="insertChannelAdapt" parameterType="PayChannelAdapt">
+        INSERT INTO t_pay_channel_adapt
+        (
+         app_id,
+         access_platform,
+         channel_code,
+         channel_type,
+         bank_card_type,
+         status,
+         sort,
+         create_time,
+         modify_time
+         )
+         VALUES
+         (
+          #{appId},
+          #{accessPlatform},
+          #{channelCode},
+          #{channelType},
+          #{bankCardType},
+          #{status},
+          #{sort},
+          #{createTime},
+          #{modifyTime}
+          )
+    </insert>
+    
+    <update id="updateChannelAdapt" parameterType="PayChannelAdapt">
+    	UPDATE t_pay_channel_adapt 
+    	<set>
+            <if test="appId != null">
+                app_id=#{appId},
+            </if>
+            <if test="accessPlatform != null">
+                access_platform=#{accessPlatform},
+            </if>
+            <if test="channelCode != null">
+                channel_code=#{channelCode},
+            </if>
+            <if test="channelType != null">
+                channel_type=#{channelType},
+            </if>
+            <if test="bankCardType != null">
+                bank_card_type=#{bankCardType},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="sort != null">
+                sort=#{sort},
+            </if>
+            <if test="modifyTime != null">
+                modify_time=#{modifyTime}
+            </if>
+    	</set>
+    	WHERE id = #{id}
+    </update>
+    
+    <update id="deleteChannelAdapt" parameterType="int">
+    	DELETE FROM t_pay_channel_adapt
+    	WHERE id = #{id}
+    </update>
+</mapper>

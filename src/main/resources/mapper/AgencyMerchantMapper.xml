@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.AgencyMerchantDao">
+
+    <resultMap id="agencyMerchant" type="com.smzdz.entity.AgencyMerchant">
+        <result column="id" property="id"/>
+        <result column="agency_code" property="agencyCode"/>
+        <result column="company_code" property="companyCode"/>
+        <result column="merchant_no" property="merchantNo"/>
+        <result column="seller_email" property="sellerEmail"/>
+        <result column="app_id" property="appId"/>
+        <result column="encryption_type" property="encryptionType"/>
+        <result column="encrypt_key" property="encryptKey"/>
+        <result column="pub_keypath" property="pubKeypath"/>
+        <result column="private_keypath" property="privateKeypath"/>
+        <result column="page_back_url" property="pageBackUrl"/>
+        <result column="notify_back_url" property="notifyBackUrl"/>
+        <result column="is_used" property="isUsed"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+    <select id="queryAgencyMerchantList" resultMap="agencyMerchant">
+        SELECT id,agency_code,company_code,merchant_no,seller_email,app_id,encryption_type,encrypt_key,
+        encrypt_key,pub_keypath,private_keypath,page_back_url,notify_back_url,is_used,create_time,
+        modify_time from t_pay_agency_merchant where 1=1
+        <if test="agencyCode != null">
+            and agency_code like CONCAT('%',#{agencyCode},'%')
+        </if>
+    </select>
+    <insert id="insertAgencyMerchant" parameterType="AgencyMerchant">
+        insert into t_pay_agency_merchant(
+         agency_code,
+        company_code,
+        merchant_no,
+        seller_email,
+        app_id,
+        encryption_type,
+        encrypt_key,
+        pub_keypath,
+        private_keypath,
+        page_back_url,
+        notify_back_url,
+        is_used,
+        create_time,
+        modify_time
+        )
+        values
+        (
+         #{agencyCode},
+         #{companyCode},
+         #{merchantNo},
+         #{sellerEmail},
+         #{appId},
+         #{encryptionType},
+         #{encryptKey},
+         #{pubKeypath},
+         #{privateKeypath},
+         #{pageBackUrl},
+         #{notifyBackUrl},
+         #{isUsed},
+         #{createTime},
+         #{modifyTime}
+        )
+    </insert>
+
+    <select id="queryAgencyMerchants" parameterType="String" resultMap="agencyMerchant">
+        SELECT id,agency_code,company_code,merchant_no,seller_email,app_id,encryption_type,encrypt_key,
+        encrypt_key,pub_keypath,private_keypath,page_back_url,notify_back_url,is_used,create_time,
+        modify_time FROM t_pay_agency_merchant WHERE agency_code = #{agencyCode}
+    </select>
+
+    <select id="queryAgencyMerchantDetail" resultMap="agencyMerchant">
+        SELECT id,agency_code,company_code,merchant_no,seller_email,app_id,encryption_type,encrypt_key,
+        encrypt_key,pub_keypath,private_keypath,page_back_url,notify_back_url,is_used,create_time,
+        modify_time FROM t_pay_agency_merchant WHERE id=#{id}
+    </select>
+
+    <update id="updateAgencyMerchant" parameterType="AgencyMerchant">
+        UPDATE t_pay_agency_merchant
+        <set>
+            <if test="agencyCode != null">
+                agency_code = #{agencyCode},
+            </if>
+            <if test="companyCode != 0">
+                company_code = #{companyCode},
+            </if>
+            <if test="merchantNo != null">
+                merchant_no = #{merchantNo},
+            </if>
+            <if test="sellerEmail != null">
+                seller_email = #{sellerEmail},
+            </if>
+            <if test="appId != null">
+                app_id = #{appId},
+            </if>
+            <if test="encryptionType != 0">
+                encryption_type = #{encryptionType},
+            </if>
+            <if test="encryptKey != null">
+                encrypt_key = #{encryptKey},
+            </if>
+            <if test="pubKeypath != null">
+                pub_keypath = #{pubKeypath},
+            </if>
+            <if test="privateKeypath != null">
+                private_keypath = #{privateKeypath},
+            </if>
+            <if test="pageBackUrl != null">
+                page_back_url = #{pageBackUrl},
+            </if>
+            <if test="notifyBackUrl != null">
+                notify_back_url = #{notifyBackUrl},
+            </if>
+            <if test="isUsed != 0">
+                is_used = #{isUsed},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime}
+            </if>
+            <where>
+                <if test="id != null">
+                    id = #{id}
+                </if>
+            </where>
+        </set>
+    </update>
+    <update id="updateAgencyMerchantById" parameterType="AgencyMerchant">
+        UPDATE t_pay_agency_merchant
+        set
+            agency_code = #{agencyCode},
+            company_code = #{companyCode},
+            merchant_no = #{merchantNo},
+            seller_email = #{sellerEmail},
+            app_id = #{appId},
+            encryption_type = #{encryptionType},
+            encrypt_key = #{encryptKey},
+            pub_keypath = #{pubKeypath},
+            private_keypath = #{privateKeypath},
+            page_back_url = #{pageBackUrl},
+            notify_back_url = #{notifyBackUrl},
+            is_used = #{isUsed},
+            create_time = #{createTime},
+            modify_time = #{modifyTime}
+            where id = #{id}
+    </update>
+
+    <update id="deleteMerchant">
+        DELETE FROM t_pay_agency_merchant
+        WHERE id = #{id}
+    </update>
+</mapper>

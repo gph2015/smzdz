@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.UserDao">
+
+    <resultMap id="userMap" type="com.smzdz.entity.User">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="mail" property="mail"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="app_id" property="appId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+    <sql id="columns">
+        id, name, mail, type, status,app_id,create_time,modify_time
+    </sql>
+
+    <select id="queryAllUser" resultMap="userMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_user where 1=1
+        <if test="name != null">
+            and name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="mail != null">
+            and mail like CONCAT('%',#{mail},'%')
+        </if>
+    </select>
+
+    <select id="queryUserByParams" parameterType="User" resultMap="userMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_user WHERE 1= 1
+        <if test="name != null">
+            and name = #{name}
+        </if>
+        <if test="mail != null">
+            and mail = #{mail}
+        </if>
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+        INSERT INTO m_user(
+        name,
+        mail,
+        type,
+        status,
+        app_id,
+        create_time,
+        modify_time
+        ) VALUES (
+        #{name},
+        #{mail},
+        #{type},
+        1,
+        #{appId},
+        #{createTime},
+        #{modifyTime}
+        )
+    </insert>
+    <update id="updateUser" parameterType="User">
+        UPDATE m_user
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="status != 0">
+                status = #{status},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime}
+            </if>
+        </set>
+        WHERE mail = #{mail}
+    </update>
+    <update id="deleteUserInfo">
+        DELETE FROM m_user
+        WHERE mail = #{mail}
+    </update>
+
+    <select id="queryUserInfoByMail" resultMap="userMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_user WHERE 1= 1
+        <if test="mail != null">
+            and mail = #{mail} AND status = '1'
+        </if>
+    </select>
+
+    <select id="queryUserInfoById" resultMap="userMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_user WHERE 1= 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+    </select>
+
+    <select id="queryUserByStatus" parameterType="User" resultMap="userMap">
+        SELECT
+        <include refid="columns"/>
+        FROM m_user WHERE 1= 1
+        <if test="status != 0">
+            and status = #{status}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzdz.dao.TransferDao">
+
+    <resultMap id="transferMap" type="com.smzdz.entity.Transfer">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="app_id" property="appId"/>
+        <result column="batch_no" property="batchNo"/>
+        <result column="out_ref" property="outRef"/>
+        <result column="pay_status" property="payStatus"/>
+        <result column="rec_bankacc" property="recBankacc"/>
+        <result column="rec_name" property="recName"/>
+        <result column="pay_amt" property="payAmt"/>
+        <result column="fee" property="fee"/>
+        <result column="pay_desc" property="payDesc"/>
+        <result column="bank_flag" property="bankFlag"/>
+        <result column="other_bank" property="otherBank"/>
+        <result column="other_city" property="otherCity"/>
+        <result column="result_desc" property="resultDesc"/>
+    </resultMap>
+
+    <select id="selectCount" resultType="int">
+        SELECT count(1) FROM t_pay_transfer WHERE 1= 1
+        <if test="f.appId !=0 and f.appId !=1000 ">
+            and app_id = #{f.appId}
+        </if>
+        <if test="f.payStatus != 0">
+            and pay_status = #{f.payStatus}
+        </if>
+        <if test="f.outRef != null and f.outRef != ''">
+            and out_ref = #{f.outRef}
+        </if>
+        <if test="f.batchNo != null and f.batchNo != ''">
+            and batch_no = #{f.batchNo}
+        </if>
+        <if test="f.recName != null and f.recName != ''">
+            and rec_name = #{f.recName}
+        </if>
+        <if test="f.recBankacc != null and f.recBankacc != ''">
+            and rec_bankacc = #{f.recBankacc}
+        </if>
+    </select>
+
+
+    <select id="selectDetailCount" resultType="int">
+        SELECT count(1) FROM t_pay_transfer WHERE 1= 1
+        <if test="f.appId !=0 and f.appId !=1000 ">
+            and app_id = #{f.appId}
+        </if>
+        <if test="f.batchNo != null and f.batchNo != ''">
+            and batch_no = #{f.batchNo}
+        </if>
+    </select>
+    <select id="selectTransferInfo" parameterType="java.util.Map" resultMap="transferMap">
+        SELECT * FROM t_pay_transfer WHERE 1= 1
+        <if test="f.appId !=0 and f.appId !=1000 ">
+            and app_id = #{f.appId}
+        </if>
+        <if test="f.payStatus != 0">
+            and pay_status = #{f.payStatus}
+        </if>
+        <if test="f.outRef != null and f.outRef != ''">
+            and out_ref = #{f.outRef}
+        </if>
+        <if test="f.batchNo != null and f.batchNo != ''">
+            and batch_no = #{f.batchNo}
+        </if>
+        <if test="f.recName != null and f.recName != ''">
+            and rec_name = #{f.recName}
+        </if>
+        <if test="f.recBankacc != null and f.recBankacc != ''">
+            and rec_bankacc = #{f.recBankacc}
+        </if>
+        order by create_time desc
+        <if test="pageFlag != null and pageFlag == 'pageFlag'">
+            LIMIT #{beginCount},#{pageRows}
+        </if>
+    </select>
+
+    <select id="selectTransferDetailInfo" resultMap="transferMap">
+        SELECT * FROM t_pay_transfer WHERE 1= 1
+        and app_id = #{appId}
+        and batch_no = #{batchNo}
+        order by create_time desc
+    </select>
+
+</mapper>

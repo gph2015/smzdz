@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../sogou-pay1/commons/commons.iml" filepath="$PROJECT_DIR$/../sogou-pay1/commons/commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sogou-pay1/notify-server/notify-server.iml" filepath="$PROJECT_DIR$/../sogou-pay1/notify-server/notify-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pay-admin.iml" filepath="$PROJECT_DIR$/pay-admin.iml" />
+      <module fileurl="file://D:/GPH_PERSONAL/Code/pay-merchant/pay-beiming2/pay-beiming.iml" filepath="D:/GPH_PERSONAL/Code/pay-merchant/pay-beiming2/pay-beiming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sogou-pay1/pay-service/pay-service.iml" filepath="$PROJECT_DIR$/../sogou-pay1/pay-service/pay-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sogou-pay1/pay-timer/pay-timer.iml" filepath="$PROJECT_DIR$/../sogou-pay1/pay-timer/pay-timer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sogou-pay1/pay-web/pay-web.iml" filepath="$PROJECT_DIR$/../sogou-pay1/pay-web/pay-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sogou-pay1/sogou-pay.iml" filepath="$PROJECT_DIR$/../sogou-pay1/sogou-pay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sogou-pay1/thirdpay-service/thirdpay-service.iml" filepath="$PROJECT_DIR$/../sogou-pay1/thirdpay-service/thirdpay-service.iml" />
+    </modules>
+  </component>
+</project>

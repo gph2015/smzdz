@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smzdz.dao.PayCheckFeeResultDao">
+
+    <resultMap id="payCheckResultFeeMap" type="com.smzdz.entity.PayCheckFeeResult" autoMapping="true">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="total_num" property="totalNum"/>
+        <result column="total_fee" property="totalFee"/>
+        <result column="out_total_num" property="outTotalNum"/>
+        <result column="out_total_fee" property="outTotalFee"/>
+        <result column="biz_code" property="bizCode"/>
+        <result column="status" property="status"/>
+        <result column="check_date" property="checkDate"/>
+        <result column="agency_code" property="agencyCode"/>
+    </resultMap>
+
+
+    <sql id="tableColumns">
+        id,create_time,total_num,total_fee,out_total_num,
+        out_total_fee,biz_code,status,check_date,agency_code
+    </sql>
+
+    <select id="selectByDateAndAgency" resultMap="payCheckResultFeeMap">
+        SELECT * from t_pay_check_fee_result
+        WHERE 1=1
+        <if test="checkDate != null and checkDate!=''">AND check_date = #{checkDate}</if>
+        <if test="agencyCode != null and agencyCode!=''">AND agency_code = #{agencyCode}</if>
+        <if test="bizCode != null">AND biz_code = #{bizCode}</if>
+        <if test="status != null">AND status = #{status}</if>
+    </select>
+
+
+</mapper>

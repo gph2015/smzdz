@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smzdz.dao.PayCheckDao">
+
+    <resultMap id="payCheckMap" type="com.smzdz.model.PayCheckModel" autoMapping="true">
+        <result column="id" property="id"/>
+        <result column="instruct_id" property="instructId"/>
+        <result column="out_order_id" property="outOrderId"/>
+        <result column="biz_code" property="bizCode"/>
+        <result column="out_trans_time" property="outTransTime"/>
+        <result column="out_biz_amt" property="outBizAmt"/>
+        <result column="out_commission_fee_amt" property="outCommissionFeeAmt"/>
+        <result column="biz_amt" property="bizAmt"/>
+        <result column="commission_fee_amt" property="commissionFeeAmt"/>
+        <result column="status" property="status"/>
+        <result column="check_date" property="checkDate"/>
+        <result column="agency_code" property="agencyCode"/>
+        <result column="merchant_no" property="merchantNo"/>
+    </resultMap>
+
+
+
+    <select id="sumCountAndAmt" resultType="Map">
+      SELECT
+            COUNT(1) AS total_count,
+            SUM(biz_amt) AS  total_amt
+            FROM t_pay_check
+        WHERE 1=1
+            <if test="f.checkDate != null and f.checkDate!='' ">
+                AND check_date =#{f.checkDate}
+            </if>
+            <if test="f.agencyCode != null and f.agencyCode!='' ">
+                AND agency_Code =#{f.agencyCode}
+            </if>
+            <if test="f.bizCode != 0 ">
+                AND biz_code =#{f.bizCode}
+            </if>
+            <if test="f.status != 0 ">
+                AND status =#{f.status}
+            </if>
+    </select>
+
+    <select id="selectCount" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM t_pay_check
+        WHERE 1=1
+        <if test="f.checkDate != null and f.checkDate!='' ">
+            AND check_date =#{f.checkDate}
+        </if>
+        <if test="f.agencyCode != null and f.agencyCode!='' ">
+            AND agency_Code =#{f.agencyCode}
+        </if>
+        <if test="f.bizCode != 0 ">
+            AND biz_code =#{f.bizCode}
+        </if>
+        <if test="f.status != 0 ">
+            AND status =#{f.status}
+        </if>
+    </select>
+
+    <select id="selectByPaging" resultMap="payCheckMap">
+            SELECT
+		   		   t1.id,
+		   		   t1.instruct_id,
+		   		   t1.out_order_id,
+		   		   t1.biz_code,
+		   		   t1.out_trans_time,
+		   		   t1.biz_amt as out_biz_amt,
+		   		   t1.commission_fee_amt as out_commission_fee_amt,
+		   		   t1.status,
+		   		   t1.check_date,
+		   		   t1.agency_code,
+		   		   t1.merchant_no,
+                   t2.biz_amt AS biz_amt,
+                   t2.commission_fee_amt AS commission_fee_amt
+              FROM (SELECT
+              			 id,instruct_id,out_order_id,biz_code,
+                         out_trans_time,biz_amt,commission_fee_amt,
+                         status,check_date,agency_code,merchant_no
+                    FROM t_pay_check
+                    WHERE status =1
+                        <if test="f.checkDate != null and f.checkDate!='' ">
+                            AND check_date =#{f.checkDate}
+                        </if>
+                        <if test="f.agencyCode != null and f.agencyCode!='' ">
+                            AND agency_Code =#{f.agencyCode}
+                        </if>
+                        <if test="f.bizCode != 0 ">
+                            AND biz_code =#{f.bizCode}
+                        </if>
+                        <if test="pageFlag != null and pageFlag == 'pageFlag'">
+                            LIMIT #{beginCount},#{pageRows}
+                        </if>
+                     ) t1
+              LEFT JOIN t_pay_check_waiting t2 ON t1.instruct_id = t2.instruct_id
+    </select>
+
+</mapper>

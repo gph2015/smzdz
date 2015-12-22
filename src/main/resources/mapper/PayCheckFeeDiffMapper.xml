@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smzdz.dao.PayCheckFeeDiffDao">
+
+    <resultMap id="payCheckFeeDiffMap" type="com.smzdz.entity.PayCheckFeeDiff" autoMapping="true">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="version" property="version"/>
+        <result column="instruct_id" property="instructId"/>
+        <result column="biz_amt" property="bizAmt"/>
+        <result column="fee_amt" property="feeAmt"/>
+        <result column="out_order_id" property="outOrderId"/>
+        <result column="out_biz_amt" property="outBizAmt"/>
+        <result column="out_fee_amt" property="outFeeAmt"/>
+        <result column="biz_code" property="bizCode"/>
+        <result column="out_trans_time" property="outTransTime"/>
+        <result column="check_date" property="checkDate"/>
+        <result column="agency_code" property="agencyCode"/>
+        <result column="merchant_no" property="merchantNo"/>
+        <result column="handle_status" property="handleStatus"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+
+    <sql id="tableColumns">
+        id,create_time,modify_time,version, instruct_id,biz_amt, fee_amt,out_order_id, out_biz_amt,out_fee_amt, biz_code,
+        out_trans_time,diff_type,check_date,agency_code,merchant_no,handle_status,remark
+    </sql>
+
+    <select id="sumCountAndAmt" resultType="Map">
+        SELECT
+        COUNT(1) AS total_count,
+        SUM(fee_amt) AS  total_fee_amt,
+        SUM(out_fee_amt) AS  out_total_fee_amt
+        FROM t_pay_check_fee_diff
+        WHERE check_date =#{f.checkDate}
+            AND agency_Code =#{f.agencyCode}
+            AND biz_code =#{f.bizCode}
+    </select>
+
+    <select id="selectCount" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM t_pay_check_fee_diff
+        WHERE check_date =#{f.checkDate}
+        AND agency_Code =#{f.agencyCode}
+        AND biz_code =#{f.bizCode}
+    </select>
+
+    <select id="selectByPaging" resultMap="payCheckFeeDiffMap">
+        SELECT
+        *
+        FROM t_pay_check_fee_diff
+        WHERE check_date =#{f.checkDate}
+        AND agency_Code =#{f.agencyCode}
+        AND biz_code =#{f.bizCode}
+        order by create_time desc
+        LIMIT #{beginCount},#{pageRows}
+    </select>
+
+    <select id="selectDiffById" resultMap="payCheckFeeDiffMap">
+        SELECT
+        *
+        FROM t_pay_check_fee_diff
+        WHERE id=#{id}
+    </select>
+
+    <update id="processDiff">
+        update t_pay_check_fee_diff
+        set
+        <if test="remark != null">
+            remark=#{remark},
+        </if>
+        modify_time=now(),
+        handle_status=1
+        where id = #{id}
+    </update>
+
+
+</mapper>
